@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.product_management.Entity.Customers;
 import com.example.product_management.Model.response.CustomersResponse;
 import com.example.product_management.Repository.CustomerRepository;
 

@@ -1,7 +1,5 @@
 package com.example.product_management.Model.request;
 
-import com.example.product_management.Entity.Customers;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
