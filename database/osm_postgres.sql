@@ -2,7 +2,8 @@ CREATE TABLE customer (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
-    email VARCHAR(100) UNIQUE
+    email VARCHAR(100) UNIQUE,
+    isdelete BOOLEAN DEFAULT FALSE
 );
 
 -- Order table
@@ -13,6 +14,7 @@ CREATE TABLE orders (
     status VARCHAR(10) NOT NULL CHECK (status IN ('NEW', 'PAID', 'CANCEL')),
     total_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
     customer_id INT NOT NULL,
+    isdelete BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_order_customer
         FOREIGN KEY (customer_id)
         REFERENCES customer(id)
