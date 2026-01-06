@@ -32,10 +32,11 @@ public class Customers {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "phone")
+  // Each Customer are unique
+  @Column(name = "phone", unique = true)
   private String phone;
 
-  @Column(name = "email")
+  @Column(name = "email", unique = true)
   private String email;
 
   // 1 Customer - M Orders
