@@ -55,6 +55,9 @@ public class Order {
   @Column(name = "customer_id", insertable = false, updatable = false)
   private Long customerId;
 
+  @Column(name = "isdelete")
+  private Boolean isDeleted = false;
+
   // M Orders - 1 Customer
   @ManyToOne
   @JoinColumn(name = "customer_id", nullable = false)

@@ -10,6 +10,5 @@ import com.example.product_management.Entity.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
-  @Query(value = "SELECT * FROM orders WHERE isdelete is :isDelete", nativeQuery = true)
-  List<Order> getOrdersByIsDelete(Boolean isDelete);
+  List<Order> findByIsDeletedFalse();
 }

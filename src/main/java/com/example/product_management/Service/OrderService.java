@@ -47,7 +47,11 @@ public class OrderService {
 
   // Get all orders from database
   public List<OrderResponse> getAll() {
-    return orderRepository.findAll().stream().map(OrderResponse::new).toList();
+    // return orderRepository.findAll().stream().map(OrderResponse::new).toList();
+    return orderRepository.findByIsDeletedFalse()
+        .stream()
+        .map(this::mapToResponse)
+        .toList();
   }
 
   // Get 1 order by ID
@@ -122,6 +126,20 @@ public class OrderService {
 
     // 5. Return response
     return mapToResponse(order);
+  }
+
+  @Transactional
+  public void softDeleteOrder(Integer id) {
+
+    Order order = orderRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Order not found"));
+
+    if (order.getStatus() == OrderStatus.PAID) {
+      throw new RuntimeException("Cannot delete PAID order");
+    }
+
+    order.setIsDeleted(true);
+    orderRepository.save(order);
   }
 
 }
