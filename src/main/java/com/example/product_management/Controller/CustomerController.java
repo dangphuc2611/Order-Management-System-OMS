@@ -11,7 +11,7 @@ import com.example.product_management.Model.response.CustomersResponse;
 import com.example.product_management.Service.CustomerService;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 public class CustomerController {
   @Autowired
   private CustomerService service;
