@@ -3,8 +3,12 @@ package com.example.product_management.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale.Category;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.product_management.Entity.Customers;
@@ -45,13 +49,18 @@ public class OrderService {
     this.customerRepository = customerRepository;
   }
 
-  // Get all orders from database
-  public List<OrderResponse> getAll() {
-    // return orderRepository.findAll().stream().map(OrderResponse::new).toList();
-    return orderRepository.findByIsDeletedFalse()
-        .stream()
-        .map(this::mapToResponse)
-        .toList();
+  // Get all orders from database(update: Pageable, find by status)
+  public List<OrderResponse> getAll(Integer pageNo, Integer pageSize, OrderStatus status) {
+    Pageable pageable = PageRequest.of(pageNo, pageSize);
+    Page<Order> pageOrders;
+    if (status != null) {
+      pageOrders = orderRepository.findByIsDeletedFalseAndStatus(status, pageable);
+    } else {
+      pageOrders = orderRepository.findByIsDeletedFalse(pageable);
+    }
+    // map from Order => Order Response
+    List<OrderResponse> pageResponse = pageOrders.map(OrderResponse::new).getContent();
+    return pageResponse;
   }
 
   // Get 1 order by ID
