@@ -1,0 +1,66 @@
+{
+  "info": {
+    "_postman_id": "02c06a1e-dbd5-474b-b656-11d93b341a96",
+    "name": "Order Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Orders",
+      "id": "5c28441e-9cdd-4b2c-ae8c-ddefc216f817",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Get One Order",
+      "id": "b1fd1fc2-2a5a-4651-a7b3-427c063821cb",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Create New Order",
+      "id": "3e51c06f-7942-4cff-8785-86de6c26c871",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Update Order's Status",
+      "id": "a1cbeae9-210a-4a64-8b7c-ed84cd52eaf9",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Customers",
+      "id": "82f58e5e-ecf2-4e7b-981f-6f09ff30aedf",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/customers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
