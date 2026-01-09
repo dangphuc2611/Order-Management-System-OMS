@@ -3,6 +3,7 @@ package com.example.product_management.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import com.example.product_management.Entity.Customers;
 import com.example.product_management.Entity.Order;
 import com.example.product_management.Entity.OrderItem;
 import com.example.product_management.Entity.OrderStatus;
+import com.example.product_management.Entity.Product;
 import com.example.product_management.Model.request.CreateOrderRequest;
 import com.example.product_management.Model.request.OrderItemRequest;
 import com.example.product_management.Model.request.UpdateOrderStatusRequest;
@@ -19,6 +21,7 @@ import com.example.product_management.Model.response.OrderResponse;
 import com.example.product_management.Repository.CustomerRepository;
 import com.example.product_management.Repository.OrderItemRepository;
 import com.example.product_management.Repository.OrderRepository;
+import com.example.product_management.Repository.ProductRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -37,13 +40,17 @@ public class OrderService {
 
   private final CustomerRepository customerRepository;
 
+  private final ProductRepository productRepository;
+
   public OrderService(
       OrderRepository orderRepository,
       OrderItemRepository orderItemRepository,
-      CustomerRepository customerRepository) {
+      CustomerRepository customerRepository,
+      ProductRepository productRepository) {
     this.orderRepository = orderRepository;
     this.orderItemRepository = orderItemRepository;
     this.customerRepository = customerRepository;
+    this.productRepository = productRepository;
   }
 
   // Get all orders from database(update: Pageable, find by status)
@@ -67,44 +74,57 @@ public class OrderService {
   }
 
   // Create a new order
+  @Transactional
   public OrderResponse createOrder(CreateOrderRequest request) {
 
-    // 1. Find customer by ID
+    // 1. Check customer
     Customers customer = customerRepository.findById(request.getCustomerId())
         .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-    // 2. Create Order
+    // 2. Create Order (chưa set total)
     Order order = new Order();
     order.setOrderCode("ORD" + System.currentTimeMillis());
     order.setCreatedAt(LocalDateTime.now());
     order.setStatus(OrderStatus.NEW);
     order.setCustomer(customer);
+    order.setTotalAmount(BigDecimal.ZERO);
 
-    // 3. Calculate totalAmount
-    BigDecimal total = BigDecimal.ZERO;
-    // ∑ (price × quantity)
+    orderRepository.save(order);
+
+    BigDecimal totalAmount = BigDecimal.ZERO;
+
+    // 3. Handle OrderItems
     for (OrderItemRequest item : request.getItems()) {
-      total = total.add(
-          item.getPrice()
-              .multiply(BigDecimal.valueOf(item.getQuantity())));
-    }
-    order.setTotalAmount(total);
 
-    // 4. Save Order first
-    Order savedOrder = orderRepository.save(order);
+      Product product = productRepository.findById(item.getProductId())
+          .orElseThrow(() -> new RuntimeException("Product not found"));
 
-    // 5. Save OrderItem
-    for (OrderItemRequest item : request.getItems()) {
+      if (product.getStock() < item.getQuantity()) {
+        throw new RuntimeException("Product out of stock");
+      }
+
+      // giảm tồn kho
+      product.setStock(product.getStock() - item.getQuantity());
+
       OrderItem orderItem = new OrderItem();
-      orderItem.setOrder(savedOrder);
-      orderItem.setProductId(item.getProductId());
+      orderItem.setOrder(order);
+      orderItem.setProduct(product);
+      orderItem.setProductId(product.getId());
       orderItem.setQuantity(item.getQuantity());
-      orderItem.setPrice(item.getPrice());
+      orderItem.setPrice(product.getPrice()); // snapshot giá
+
       orderItemRepository.save(orderItem);
+
+      totalAmount = totalAmount.add(
+          product.getPrice().multiply(
+              BigDecimal.valueOf(item.getQuantity())));
     }
 
-    // 6. Return response
-    return mapToResponse(savedOrder);
+    // 4. Update totalAmount
+    order.setTotalAmount(totalAmount);
+    orderRepository.save(order);
+
+    return mapToResponse(order);
   }
 
   // Map Order entity to OrderResponse

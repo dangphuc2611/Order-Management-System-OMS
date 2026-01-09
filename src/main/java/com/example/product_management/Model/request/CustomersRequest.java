@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 // CustomersRequest model to handle customer data
 public class CustomersRequest {
-  private Integer id;
 
   private String name;
 

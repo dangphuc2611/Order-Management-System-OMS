@@ -39,11 +39,15 @@ public class OrderItem {
   private Long orderId;
 
   @Column(name = "product_id", nullable = false)
-  private Long productId;
+  private Integer productId;
 
   @Column(nullable = false)
   private Integer quantity;
 
   @Column(nullable = false, precision = 12, scale = 2)
   private BigDecimal price;
+
+  @ManyToOne
+  @JoinColumn(name = "product_id", updatable = false, insertable = false)
+  private Product product;
 }

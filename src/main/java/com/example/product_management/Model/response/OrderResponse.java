@@ -37,6 +37,7 @@ public class OrderResponse {
     this.status = order.getStatus();
     this.customerId = order.getCustomerId();
     this.customerName = order.getCustomer().getName();
+
   }
 
 }

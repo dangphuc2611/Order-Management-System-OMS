@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 public class OrderItemResponse {
   private Long id;
 
-  private Long productId;
-
   private Integer quantity;
 
   private BigDecimal price;
@@ -22,7 +20,6 @@ public class OrderItemResponse {
   // Constructor to map OrderItem entity to OrderItemResponse
   public OrderItemResponse(OrderItem orderItem) {
     this.id = orderItem.getId();
-    this.productId = orderItem.getProductId();
     this.quantity = orderItem.getQuantity();
     this.price = orderItem.getPrice();
   }

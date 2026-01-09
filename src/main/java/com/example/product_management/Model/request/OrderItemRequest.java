@@ -14,7 +14,7 @@ import lombok.Setter;
 // OrderItemRequest model to handle order item data
 public class OrderItemRequest {
 
-  private Long productId;
+  private Integer productId;
 
   private Integer quantity;
 

@@ -18,7 +18,11 @@ public class CustomerService {
 
   // Get all customers from database
   public List<CustomersResponse> getAll() {
-    return repository.findAll().stream().map(CustomersResponse::new).toList();
+    List<Customers> pageCustomers = repository.findByIsDeletedFalse();
+    // map from Order => Order Response
+    List<CustomersResponse> pageResponse = pageCustomers.stream().map(CustomersResponse::new).toList();
+    return pageResponse;
+    // return repository.findAll().stream().map(CustomersResponse::new).toList();
   }
 
   public void addCustomer(CustomersRequest request) {

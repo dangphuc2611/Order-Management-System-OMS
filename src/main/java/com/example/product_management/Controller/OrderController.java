@@ -3,6 +3,7 @@ package com.example.product_management.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/orders")
+@CrossOrigin(origins = "*")
 public class OrderController {
   @Autowired
   private OrderService service;
@@ -31,7 +33,7 @@ public class OrderController {
   @GetMapping("")
   public List<OrderResponse> getAll(
       @RequestParam(defaultValue = "0") int pageNo,
-      @RequestParam(defaultValue = "3") int pageSize,
+      @RequestParam(defaultValue = "100000") int pageSize,
       @RequestParam(required = false) OrderStatus status) {
     return service.getAll(pageNo, pageSize, status);
   }
