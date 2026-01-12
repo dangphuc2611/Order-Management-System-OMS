@@ -32,8 +32,8 @@ public class OrderController {
   // Get all order in database
   @GetMapping("")
   public List<OrderResponse> getAll(
-      @RequestParam(defaultValue = "0") int pageNo,
-      @RequestParam(defaultValue = "100000") int pageSize,
+      @RequestParam(defaultValue = "0", required = true) int pageNo,
+      @RequestParam(defaultValue = "10") int pageSize,
       @RequestParam(required = false) OrderStatus status) {
     return service.getAll(pageNo, pageSize, status);
   }

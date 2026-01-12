@@ -3,6 +3,9 @@ package com.example.product_management.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.product_management.Entity.Customers;
@@ -17,12 +20,22 @@ public class CustomerService {
   private CustomerRepository repository;
 
   // Get all customers from database
-  public List<CustomersResponse> getAll() {
-    List<Customers> pageCustomers = repository.findByIsDeletedFalse();
+  public List<CustomersResponse> getAll(Integer pageNo, Integer pageSize, String name) {
+    // List<Customers> pageCustomers = repository.findByIsDeletedFalse();
+    // List<CustomersResponse> pageResponse =
+    // pageCustomers.stream().map(CustomersResponse::new).toList();
+    // return pageResponse;
+
+    Pageable pageable = PageRequest.of(pageNo, pageSize);
+    Page<Customers> pageCustomers;
+    if (name != null) {
+      pageCustomers = repository.findByIsDeletedFalseAndNameContainingIgnoreCase(name, pageable);
+    } else {
+      pageCustomers = repository.findByIsDeletedFalse(pageable);
+    }
     // map from Order => Order Response
-    List<CustomersResponse> pageResponse = pageCustomers.stream().map(CustomersResponse::new).toList();
+    List<CustomersResponse> pageResponse = pageCustomers.map(CustomersResponse::new).getContent();
     return pageResponse;
-    // return repository.findAll().stream().map(CustomersResponse::new).toList();
   }
 
   public void addCustomer(CustomersRequest request) {

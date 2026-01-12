@@ -2,6 +2,8 @@ package com.example.product_management.Entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,6 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Table(name = "customer")
 @ToString
+@DynamicInsert
 // Customers Entity
 public class Customers {
   @Id
@@ -39,7 +42,7 @@ public class Customers {
   @Column(name = "email", unique = true)
   private String email;
 
-  @Column(name = "isdelete")
+  @Column(name = "isdelete", nullable = false, columnDefinition = "boolean default false")
   private Boolean isDeleted;
 
   // 1 Customer - M Orders
