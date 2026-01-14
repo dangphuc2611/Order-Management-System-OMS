@@ -39,6 +39,11 @@ public class CustomerController {
     return service.getAll(pageNo, pageSize, name);
   }
 
+  @GetMapping("/all")
+  public List<CustomersResponse> getAllWithoutPageable() {
+    return service.getAllWithoutPageable();
+  }
+
   @PostMapping("")
   public void addCustomer(@RequestBody CustomersRequest request) {
     service.addCustomer(request);

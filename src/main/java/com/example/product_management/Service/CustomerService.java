@@ -21,11 +21,6 @@ public class CustomerService {
 
   // Get all customers from database
   public List<CustomersResponse> getAll(Integer pageNo, Integer pageSize, String name) {
-    // List<Customers> pageCustomers = repository.findByIsDeletedFalse();
-    // List<CustomersResponse> pageResponse =
-    // pageCustomers.stream().map(CustomersResponse::new).toList();
-    // return pageResponse;
-
     Pageable pageable = PageRequest.of(pageNo, pageSize);
     Page<Customers> pageCustomers;
     if (name != null) {
@@ -35,6 +30,12 @@ public class CustomerService {
     }
     // map from Order => Order Response
     List<CustomersResponse> pageResponse = pageCustomers.map(CustomersResponse::new).getContent();
+    return pageResponse;
+  }
+
+  public List<CustomersResponse> getAllWithoutPageable() {
+    List<Customers> pageCustomers = repository.findByIsDeletedFalse();
+    List<CustomersResponse> pageResponse = pageCustomers.stream().map(CustomersResponse::new).toList();
     return pageResponse;
   }
 
