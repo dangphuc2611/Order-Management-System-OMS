@@ -20,7 +20,7 @@ public class CustomerService {
   private CustomerRepository repository;
 
   // Get all customers from database
-  public List<CustomersResponse> getAll(Integer pageNo, Integer pageSize, String name) {
+  public Page<CustomersResponse> getAll(Integer pageNo, Integer pageSize, String name) {
     Pageable pageable = PageRequest.of(pageNo, pageSize);
     Page<Customers> pageCustomers;
     if (name != null) {
@@ -29,7 +29,7 @@ public class CustomerService {
       pageCustomers = repository.findByIsDeletedFalse(pageable);
     }
     // map from Order => Order Response
-    List<CustomersResponse> pageResponse = pageCustomers.map(CustomersResponse::new).getContent();
+    Page<CustomersResponse> pageResponse = pageCustomers.map(CustomersResponse::new);
     return pageResponse;
   }
 

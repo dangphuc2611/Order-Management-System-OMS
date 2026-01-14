@@ -2,7 +2,6 @@ package com.example.product_management.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +53,7 @@ public class OrderService {
   }
 
   // Get all orders from database(update: Pageable, find by status)
-  public List<OrderResponse> getAll(Integer pageNo, Integer pageSize, OrderStatus status) {
+  public Page<OrderResponse> getAll(Integer pageNo, Integer pageSize, OrderStatus status) {
     Pageable pageable = PageRequest.of(pageNo, pageSize);
     Page<Order> pageOrders;
     if (status != null) {
@@ -63,7 +62,7 @@ public class OrderService {
       pageOrders = orderRepository.findByIsDeletedFalse(pageable);
     }
     // map from Order => Order Response
-    List<OrderResponse> pageResponse = pageOrders.map(OrderResponse::new).getContent();
+    Page<OrderResponse> pageResponse = pageOrders.map(OrderResponse::new);
     return pageResponse;
   }
 
