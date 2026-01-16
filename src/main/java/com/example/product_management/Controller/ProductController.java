@@ -1,11 +1,7 @@
 package com.example.product_management.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.product_management.MapperUtil;
-import com.example.product_management.Entity.Customers;
-import com.example.product_management.Entity.Product;
-import com.example.product_management.Model.request.CustomersRequest;
 import com.example.product_management.Model.request.ProductRequest;
-import com.example.product_management.Model.response.CustomersResponse;
 import com.example.product_management.Model.response.ProductResponse;
 import com.example.product_management.Repository.ProductRepository;
 import com.example.product_management.Service.ProductService;

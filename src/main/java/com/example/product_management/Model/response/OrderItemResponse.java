@@ -4,14 +4,16 @@ import java.math.BigDecimal;
 
 import com.example.product_management.Entity.OrderItem;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 // OrderItemResponse model to handle order item response data
 public class OrderItemResponse {
   private Long id;
+
+  private String productName;
 
   private Integer quantity;
 
@@ -20,6 +22,7 @@ public class OrderItemResponse {
   // Constructor to map OrderItem entity to OrderItemResponse
   public OrderItemResponse(OrderItem orderItem) {
     this.id = orderItem.getId();
+    this.productName = orderItem.getProduct().getName();
     this.quantity = orderItem.getQuantity();
     this.price = orderItem.getPrice();
   }

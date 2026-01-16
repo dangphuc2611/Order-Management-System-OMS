@@ -2,6 +2,7 @@ package com.example.product_management.Model.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.example.product_management.Entity.Order;
 import com.example.product_management.Entity.OrderStatus;
@@ -28,6 +29,8 @@ public class OrderResponse {
 
   private String customerName;
 
+  private List<OrderItemResponse> orderItems;
+
   // Constructor to map Order entity to OrderResponse
   public OrderResponse(Order order) {
     this.id = order.getId();
@@ -37,7 +40,7 @@ public class OrderResponse {
     this.status = order.getStatus();
     this.customerId = order.getCustomerId();
     this.customerName = order.getCustomer().getName();
-
+    this.orderItems = order.getOrderItems().stream().map(OrderItemResponse::new).toList();
   }
 
 }
